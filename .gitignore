@@ -2,7 +2,7 @@
 __pycache__
 wait.db
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
@@ -10,7 +10,7 @@ wait.db
 /coverage
 
 # production
-/build
+build
 
 # misc
 .DS_Store

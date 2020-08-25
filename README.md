@@ -1,5 +1,22 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Setup
+```
+sudo apt-get install sqlite3
+sqlite3 wait.db < setup.sql
+pip3 install -r requirements.txt
+```
+### Run backend
+```
+python3 backend.py
+```
+The backend server will be run on `http://localhost:48763`
+
+### Run frontend
+```
+npm start
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
