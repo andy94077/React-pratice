@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Marquee.css";
 import { makeStyles } from "@material-ui/core";
 
@@ -14,7 +14,6 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     listStyleType: "none",
     position: "absolute",
-    animation: "marquee 5s linear infinite",
   },
   child: {
     whiteSpace: "nowrap",
@@ -26,27 +25,23 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Marquee(props) {
-  const { children } = props;
+  const { children, seconds = 5 } = props;
   const classes = useStyles();
-  // const [head, setHead] = useState(0);
+  const [head, setHead] = useState(0);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setHead((prev) => (prev + 1) % children.length);
-  //   }, 5000);
-  //   return () => clearInterval(timer);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setHead((prev) => (prev + 1) % children.length);
+    }, seconds * 1000);
+  }, [head]);
 
   return (
     <div className={classes.marquee}>
-      <ul className={classes.marqueeContainer}>
-        {children.map((item, index) =>
-          index === children.length - 1 ? (
-            <li className={classes.lastChild}>{item}</li>
-          ) : (
-            <li className={classes.child}>{item}</li>
-          )
-        )}
+      <ul
+        className={classes.marqueeContainer}
+        style={{ animation: `marquee ${seconds}s linear infinite` }}
+      >
+        <li className={classes.lastChild}>{children[head]}</li>
       </ul>
     </div>
   );

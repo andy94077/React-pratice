@@ -13,9 +13,9 @@ import Marquee from "./components/Marquee";
 export default function App() {
   const [text, setText] = useState("");
   const [marqueeList, setMarqueeList] = useState([
-    "You spin me right round, baby. Like a record, baby.1",
-    "You spin me right round, baby. Like a record, baby.2",
-    "You spin me right round, baby. Like a record, baby.3",
+    "111111111111111111111",
+    "222222222222222222222",
+    "333333333333333333333",
   ]);
   const [time, setTime] = useState(Math.floor(Date.now() / 1000));
   const { userId } = useSelector(selectUser);
@@ -73,6 +73,11 @@ export default function App() {
           clear
         </Button>
         <p>{time}</p>
+        <ol>
+          {marqueeList.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ol>
       </Container>
     </>
   );
