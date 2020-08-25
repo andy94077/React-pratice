@@ -24,7 +24,14 @@ const useStyles = makeStyles(() => ({
 export default function CountdownButton(props) {
   const classes = useStyles();
   const { userId } = useSelector(selectUser);
-  const { children, onClick, duration = 10, countdown, setCountdown } = props;
+  const {
+    children,
+    onClick,
+    duration = 10,
+    countdown,
+    setCountdown,
+    buttonRef,
+  } = props;
 
   useEffect(() => {
     if (userId === null) return;
@@ -63,6 +70,7 @@ export default function CountdownButton(props) {
         )
       }
       size="large"
+      ref={buttonRef}
     >
       {countdown > 0 ? (
         <span style={{ marginRight: 3, color: "#777" }}>Wait for</span>

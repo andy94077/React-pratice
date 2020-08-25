@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Button, Container } from "@material-ui/core";
+import { Button, Container, TextField } from "@material-ui/core";
 
 import { useSelector, useDispatch } from "react-redux";
 import CountdownButton from "./CountdownButton";
@@ -8,13 +8,20 @@ import CountdownButton from "./CountdownButton";
 import useCountdown from "./useCountdown";
 import { CONCAT_SERVER_URL } from "./utils";
 import { selectUser, setUser } from "./redux/userSlice";
+import Marquee from "./components/Marquee";
 
 export default function App() {
   const [text, setText] = useState("");
+  const [marqueeList, setMarqueeList] = useState([
+    "You spin me right round, baby. Like a record, baby.1",
+    "You spin me right round, baby. Like a record, baby.2",
+    "You spin me right round, baby. Like a record, baby.3",
+  ]);
   const [time, setTime] = useState(Math.floor(Date.now() / 1000));
   const { userId } = useSelector(selectUser);
   const dispatch = useDispatch();
   const [countdown, setCountdown] = useCountdown();
+  const buttonRef = useRef();
 
   useEffect(() => {
     dispatch(setUser({ userId: 1 }));
@@ -25,8 +32,14 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
+  const handleChange = (e) => setText(e.target.value);
+  const handleKeyUp = (e) => {
+    if (e.key === "Enter") buttonRef.current.click();
+  };
+
   const onClick = () => {
-    setText((prev) => `${prev} hi`);
+    setMarqueeList((list) => list.concat(text));
+    setText("");
   };
 
   const handleClick = () => {
@@ -38,20 +51,29 @@ export default function App() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <CountdownButton
-        onClick={onClick}
-        duration={10}
-        countdown={countdown}
-        setCountdown={setCountdown}
-      >
-        Click to send requests
-      </CountdownButton>
-      <Button variant="contained" onClick={handleClick}>
-        clear
-      </Button>
-      <p>{text}</p>
-      <p>{time}</p>
-    </Container>
+    <>
+      <Marquee>{marqueeList}</Marquee>
+      <Container maxWidth="sm">
+        <TextField
+          label="marquee text"
+          value={text}
+          onChange={handleChange}
+          onKeyUp={handleKeyUp}
+        />
+        <CountdownButton
+          onClick={onClick}
+          duration={0}
+          countdown={countdown}
+          setCountdown={setCountdown}
+          buttonRef={buttonRef}
+        >
+          Click to send requests
+        </CountdownButton>
+        <Button variant="contained" onClick={handleClick}>
+          clear
+        </Button>
+        <p>{time}</p>
+      </Container>
+    </>
   );
 }
