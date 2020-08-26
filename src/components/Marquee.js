@@ -31,7 +31,6 @@ export default function Marquee(props) {
   const [head, setHead] = useState(0);
   const [pause, setPause] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const liRef = useRef(null);
   const ulRef = useRef(null);
   const { width } = useWindowSize();
 
@@ -45,7 +44,7 @@ export default function Marquee(props) {
     };
 
     ul.style.animation = `marquee ${
-      (width + liRef.current.offsetWidth) / 200
+      (width + ul.offsetWidth) / 200
     }s linear infinite`;
 
     ul.addEventListener("animationiteration", moveHead);
@@ -61,9 +60,7 @@ export default function Marquee(props) {
           className={clsx(classes.marqueeContainer, { [classes.pause]: pause })}
           ref={ulRef}
         >
-          <li className={classes.child} ref={liRef}>
-            {children[head]}
-          </li>
+          <li className={classes.child}>{children[head]}</li>
         </ul>
       </div>
     </>
