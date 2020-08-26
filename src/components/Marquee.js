@@ -6,7 +6,6 @@ import useWindowSize from "../useWindowSize";
 
 const useStyles = makeStyles(() => ({
   marquee: {
-    width: "100vw",
     height: "3em",
     margin: "0 auto",
     overflow: "hidden",
@@ -31,6 +30,7 @@ export default function Marquee(props) {
   const classes = useStyles();
   const [head, setHead] = useState(0);
   const [pause, setPause] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const liRef = useRef(null);
   const ulRef = useRef(null);
   const { width } = useWindowSize();
@@ -40,17 +40,18 @@ export default function Marquee(props) {
     const ul = ulRef.current;
     const moveHead = () => {
       setHead((prev) => (prev + 1) % children.length);
+      setRefresh((prev) => !prev);
       setPause(true);
     };
 
     ul.style.animation = `marquee ${
       (width + liRef.current.offsetWidth) / 200
-    }s linear 1`;
+    }s linear infinite`;
 
-    ul.addEventListener("animationend", moveHead);
+    ul.addEventListener("animationiteration", moveHead);
     setPause(false);
-    return () => ul.removeEventListener("animationend", moveHead);
-  }, [head, width]);
+    return () => ul.removeEventListener("animationiteration", moveHead);
+  }, [refresh, width]);
 
   return (
     <>
